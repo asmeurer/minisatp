@@ -80,9 +80,9 @@ void dump(const vec<Lit>& ps, const vec<Int>& Cs, const vec<int>& assigns)
         dump(Cs[i]);
         reportf("*");
         dump(ps[i]);
-        if (assigns[var(ps[i])] == toInt(l_Undef))
+        if (assigns[var(ps[i])] == toInt(Minisat::l_Undef))
             reportf(":?");
-        else if ((assigns[var(ps[i])] == toInt(l_True) && !sign(ps[i])) || (assigns[var(ps[i])] == toInt(l_False) && sign(ps[i])))
+        else if ((assigns[var(ps[i])] == toInt(Minisat::l_True) && !sign(ps[i])) || (assigns[var(ps[i])] == toInt(Minisat::l_False) && sign(ps[i])))
             reportf(":1");
         else
             reportf(":0");
@@ -109,9 +109,9 @@ void dump(const Linear& pb, const vec<int>& assigns)
         dump(pb(i));
         reportf("*");
         dump(pb[i]);
-        if (assigns[var(pb[i])] == toInt(l_Undef))
+        if (assigns[var(pb[i])] == toInt(Minisat::l_Undef))
             reportf(":?");
-        else if ((assigns[var(pb[i])] == toInt(l_True) && !sign(pb[i])) || (assigns[var(pb[i])] == toInt(l_False) && sign(pb[i])))
+        else if ((assigns[var(pb[i])] == toInt(Minisat::l_True) && !sign(pb[i])) || (assigns[var(pb[i])] == toInt(Minisat::l_False) && sign(pb[i])))
             reportf(":1");
         else
             reportf(":0");

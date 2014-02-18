@@ -130,8 +130,8 @@ bool PbSolver::normalizePb(vec<Lit>& ps, vec<Int>& Cs, Int& C)
     // Remove assigned literals and literals with zero coefficients:
     int new_sz = 0;
     for (int i = 0; i < ps.size(); i++){
-        if (value(ps[i]) != l_Undef){
-            if (value(ps[i]) == l_True)
+        if (value(ps[i]) != Minisat::l_Undef){
+            if (value(ps[i]) == Minisat::l_True)
                 C -= Cs[i];
         }else if (Cs[i] != 0){
             ps[new_sz] = ps[i];
@@ -255,12 +255,12 @@ bool PbSolver::propagate(Linear& c)
     int     j = 0;
     for (int i = 0; i < c.size; i++){
         assert(c(i) > 0);
-        if (value(c[i]) == l_Undef){
+        if (value(c[i]) == Minisat::l_Undef){
             sum += c(i);
             c(j) = c(i);
             c[j] = c[i];
             j++;
-        }else if (value(c[i]) == l_True)
+        }else if (value(c[i]) == Minisat::l_True)
             true_sum += c(i);
     }
     c.size = j;
@@ -488,9 +488,9 @@ Int evalGoal(Linear& goal, Minisat::vec<lbool>& model)
 {
     Int sum = 0;
     for (int i = 0; i < goal.size; i++){
-        assert(model[var(goal[i])] != l_Undef);
-        if (( sign(goal[i]) && model[var(goal[i])] == l_False)
-        ||  (!sign(goal[i]) && model[var(goal[i])] == l_True )
+        assert(model[var(goal[i])] != Minisat::l_Undef);
+        if (( sign(goal[i]) && model[var(goal[i])] == Minisat::l_False)
+            ||  (!sign(goal[i]) && model[var(goal[i])] == Minisat::l_True )
         )
             sum += goal(i);
     }
@@ -552,9 +552,9 @@ void PbSolver::solve(solve_Command cmd)
             n_solutions++;
             reportf("MODEL# %d:", n_solutions);
             for (Var x = 0; x < pb_n_vars; x++){
-                assert(sat_solver.model[x] != l_Undef);
-                ban.push(mkLit(x, sat_solver.model[x] == l_True));
-                reportf(" %s%s", (sat_solver.model[x] == l_False)?"-":"", index2name[x]);
+                assert(sat_solver.model[x] != Minisat::l_Undef);
+                ban.push(mkLit(x, sat_solver.model[x] == Minisat::l_True));
+                reportf(" %s%s", (sat_solver.model[x] == Minisat::l_False)?"-":"", index2name[x]);
             }
             reportf("\n");
             sat_solver.addClause(ban);
@@ -562,8 +562,8 @@ void PbSolver::solve(solve_Command cmd)
         }else{
             best_model.clear();
             for (Var x = 0; x < pb_n_vars; x++)
-                assert(sat_solver.model[x] != l_Undef),
-                best_model.push(sat_solver.model[x] == l_True);
+                assert(sat_solver.model[x] != Minisat::l_Undef),
+                    best_model.push(sat_solver.model[x] == Minisat::l_True);
 
             if (goal == NULL)   // ((fix: moved here Oct 4, 2005))
                 break;

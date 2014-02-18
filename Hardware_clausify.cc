@@ -49,7 +49,7 @@ struct Clausifier
 };
 
 CMap<int>      Clausifier::occ  (0);
-CMap<Var>      Clausifier::vmap (var_Undef);
+CMap<Var>      Clausifier::vmap (Minisat::var_Undef);
 CMap<Lit,true> Clausifier::vmapp(lit_Undef);
 
 void Clausifier::usage(Formula f)
@@ -114,9 +114,9 @@ Lit Clausifier::polarityClausify(Formula f)
     }else{
 #if 1
         result = vmapp.at(~f) != lit_Undef && !s.isEliminated(var(vmapp.at(~f))) ?
-            mkLit(var(vmapp.at(~f))) : mkLit(s.newVar(l_Undef, !opt_branch_pbvars));
+            mkLit(var(vmapp.at(~f))) : mkLit(s.newVar(Minisat::l_Undef, !opt_branch_pbvars));
 #else
-        result = mkLit(s.newVar(l_Undef, !opt_branch_pbvars));
+        result = mkLit(s.newVar(Minisat::l_Undef, !opt_branch_pbvars));
 #endif
         if (Bin_p(f)){
             if (op(f) == op_And){
@@ -224,15 +224,15 @@ Lit Clausifier::polarityClausify(Formula f)
 
 Lit Clausifier::basicClausify(Formula f)
 {
-    Var result = var_Undef;
+    Var result = Minisat::var_Undef;
 
     if (Atom_p(f)){
         assert(!Const_p(f));
         result = index(f);
-    }else if (vmap.at(f) != var_Undef && !s.isEliminated(vmap.at(f))){
+    }else if (vmap.at(f) != Minisat::var_Undef && !s.isEliminated(vmap.at(f))){
         result = vmap.at(f);
     }else{
-        result = s.newVar(l_Undef, !opt_branch_pbvars);
+        result = s.newVar(Minisat::l_Undef, !opt_branch_pbvars);
         Lit p  = mkLit(result);
         if (Bin_p(f)){
 
@@ -303,7 +303,7 @@ Lit Clausifier::basicClausify(Formula f)
         vmap.set(f,result);
     }
 
-    assert(result != var_Undef);
+    assert(result != Minisat::var_Undef);
 
     return mkLit(result,sign(f));
 }

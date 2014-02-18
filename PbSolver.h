@@ -91,12 +91,12 @@ protected:
     bool    propagate(Linear& c);
     void    propagate();
     bool    addUnit  (Lit p) {
-        if (value(p) == l_Undef) trail.push(p);
+        if (value(p) == Minisat::l_Undef) trail.push(p);
         return sat_solver.addClause(p); }
     bool    addClause(const vec<Lit>& ps){
         tmp_clause.clear(); for (int i = 0; i < ps.size(); i++) tmp_clause.push(ps[i]);
         return sat_solver.addClause_(tmp_clause); }
-        
+
     bool    normalizePb(vec<Lit>& ps, vec<Int>& Cs, Int& C);
     void    storePb    (const vec<Lit>& ps, const vec<Int>& Cs, Int lo, Int hi);
     void    setupOccurs();   // Called on demand from 'propagate()'.
@@ -105,7 +105,7 @@ protected:
     bool    convertPbs(bool first_call);   // Called from 'solve()' to convert PB constraints to clauses.
 
 public:
-    PbSolver(bool use_preprocessing = false) 
+    PbSolver(bool use_preprocessing = false)
                 : goal(NULL)
                 , propQ_head(0)
                   //, stats(sat_solver.stats_ref())
@@ -114,8 +114,8 @@ public:
                 , best_goalvalue(Int_MAX)
                 {
                     // Turn off preprocessing if wanted.
-                    if (!use_preprocessing) 
-                        sat_solver.eliminate(true); 
+                    if (!use_preprocessing)
+                        sat_solver.eliminate(true);
                 }
 
     // Helpers (semi-internal):
